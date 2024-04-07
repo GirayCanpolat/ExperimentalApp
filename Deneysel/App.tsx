@@ -1,118 +1,258 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useMemo, useState } from "react";
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    useWindowDimensions,
+} from "react-native";
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { TimerPicker, TimerPickerModal } from "react-native-timer-picker";
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import { formatTime } from "./formatTime";
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+export default function App() {
+    const { width: screenWidth } = useWindowDimensions();
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+    const [showPickerExample1, setShowPickerExample1] = useState(false);
+    const [showPickerExample2, setShowPickerExample2] = useState(false);
+    const [alarmStringExample1, setAlarmStringExample1] = useState(null);
+    const [alarmStringExample2, setAlarmStringExample2] = useState(null);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+    const renderExample1 = useMemo(() => {
+        return (
+            <View
+                style={[
+                    styles.container,
+                    styles.page1Container,
+                    { width: screenWidth },
+                ]}>
+                <Text style={styles.textDark}>
+                    {alarmStringExample1 !== null
+                        ? "Alarm set for"
+                        : "No alarm set"}
+                </Text>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => setShowPickerExample1(true)}>
+                    <View style={styles.touchableContainer}>
+                        {alarmStringExample1 !== null ? (
+                            <Text style={styles.alarmTextDark}>
+                                {alarmStringExample1}
+                            </Text>
+                        ) : null}
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            onPress={() => setShowPickerExample1(true)}>
+                            <View style={styles.buttonContainer}>
+                                <Text
+                                    style={[styles.button, styles.buttonDark]}>
+                                    Set Alarm 🔔
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </TouchableOpacity>
+                <TimerPickerModal
+                    visible={showPickerExample1}
+                    setIsVisible={setShowPickerExample1}
+                    onConfirm={(pickedDuration) => {
+                        setAlarmStringExample1(formatTime(pickedDuration));
+                        setShowPickerExample1(false);
+                    }}
+                    modalTitle="Set Alarm"
+                    onCancel={() => setShowPickerExample1(false)}
+                    closeOnOverlayPress
+                    styles={{
+                        theme: "dark",
+                    }}
+                    modalProps={{
+                        overlayOpacity: 0.2,
+                    }}
+                />
+            </View>
+        );
+    }, [alarmStringExample1, screenWidth, showPickerExample1]);
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+    const renderExample2 = useMemo(() => {
+        return (
+            <View
+                style={[
+                    styles.container,
+                    styles.page2Container,
+                    { width: screenWidth },
+                ]}>
+                <Text style={styles.textLight}>
+                    {alarmStringExample2 !== null
+                        ? "Alarm set for"
+                        : "No alarm set"}
+                </Text>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => setShowPickerExample2(true)}>
+                    <View style={styles.touchableContainer}>
+                        {alarmStringExample2 !== null ? (
+                            <Text style={styles.alarmTextLight}>
+                                {alarmStringExample2}
+                            </Text>
+                        ) : null}
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            onPress={() => setShowPickerExample2(true)}>
+                            <View style={styles.buttonContainer}>
+                                <Text
+                                    style={[styles.button, styles.buttonLight]}>
+                                    Set Alarm 🔔
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </TouchableOpacity>
+                <TimerPickerModal
+                    visible={showPickerExample2}
+                    setIsVisible={setShowPickerExample2}
+                    onConfirm={(pickedDuration) => {
+                        setAlarmStringExample2(formatTime(pickedDuration));
+                        setShowPickerExample2(false);
+                    }}
+                    modalTitle="Set Alarm"
+                    onCancel={() => setShowPickerExample2(false)}
+                    closeOnOverlayPress
+                    styles={{
+                        theme: "light",
+                    }}
+                />
+            </View>
+        );
+    }, [alarmStringExample2, screenWidth, showPickerExample2]);
+
+    const renderExample3 = useMemo(() => {
+        return (
+            <View
+                style={[
+                    styles.container,
+                    styles.page3Container,
+                    { width: screenWidth },
+                ]}>
+                <TimerPicker
+                    padWithNItems={2}
+                    hourLabel=":"
+                    minuteLabel=":"
+                    secondLabel=""
+                    styles={{
+                        theme: "dark",
+                        backgroundColor: "#202020",
+                        pickerItem: {
+                            fontSize: 34,
+                        },
+                        pickerLabel: {
+                            fontSize: 32,
+                            marginTop: 0,
+                        },
+                        pickerContainer: {
+                            marginRight: 6,
+                        },
+                    }}
+                />
+            </View>
+        );
+    }, [screenWidth]);
+
+    const renderExample4 = useMemo(() => {
+        return (
+            <View
+                style={[
+                    styles.container,
+                    styles.page4Container,
+                    { width: screenWidth },
+                ]}>
+                <TimerPicker
+                    padWithNItems={3}
+                    hideHours
+                    minuteLabel="min"
+                    secondLabel="sec"
+                    styles={{
+                        theme: "light",
+                        pickerItem: {
+                            fontSize: 34,
+                        },
+                        pickerLabel: {
+                            fontSize: 26,
+                            right: -20,
+                        },
+                        pickerLabelContainer: {
+                            width: 60,
+                        },
+                        pickerItemContainer: {
+                            width: 150,
+                        },
+                    }}
+                />
+            </View>
+        );
+    }, [screenWidth]);
+
+    return (
+        <ScrollView horizontal pagingEnabled>
+            {renderExample1}
+            {renderExample2}
+            {renderExample3}
+            {renderExample4}
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+    container: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    page1Container: {
+        backgroundColor: "#514242",
+    },
+    page2Container: {
+        backgroundColor: "#F1F1F1",
+    },
+    page3Container: {
+        backgroundColor: "#202020",
+    },
+    page4Container: {
+        backgroundColor: "#F1F1F1",
+    },
+    textDark: {
+        fontSize: 18,
+        color: "#F1F1F1",
+    },
+    textLight: {
+        fontSize: 18,
+        color: "#202020",
+    },
+    alarmTextDark: {
+        fontSize: 48,
+        color: "#F1F1F1",
+    },
+    alarmTextLight: {
+        fontSize: 48,
+        color: "#202020",
+    },
+    touchableContainer: {
+        alignItems: "center",
+    },
+    button: {
+        paddingVertical: 10,
+        paddingHorizontal: 18,
+        borderWidth: 1,
+        borderRadius: 10,
+        fontSize: 16,
+        overflow: "hidden",
+    },
+    buttonDark: {
+        borderColor: "#C2C2C2",
+        color: "#C2C2C2",
+    },
+    buttonLight: { borderColor: "#8C8C8C", color: "#8C8C8C" },
+    buttonContainer: {
+        marginTop: 30,
+    },
 });
-
-export default App;
