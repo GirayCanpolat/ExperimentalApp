@@ -7,7 +7,7 @@ import {
     View,
     useWindowDimensions,
 } from "react-native";
-
+//deneme olarak yorum satırı.
 import { TimerPicker, TimerPickerModal } from "react-native-timer-picker";
 
 import { formatTime } from "./formatTime";
@@ -85,7 +85,7 @@ export default function App() {
                 ]}>
                 <Text style={styles.textLight}>
                     {alarmStringExample2 !== null
-                        ? "Alarm set for"
+                        ? "NEw Alarm set for"
                         : "No alarm set"}
                 </Text>
                 <TouchableOpacity
