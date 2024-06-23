@@ -257,4 +257,4 @@ const styles = StyleSheet.create({
     },
 });
 
-//bu bir yorumdur 2
+//1bu bir yorumdur 2
